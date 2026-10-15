@@ -7,6 +7,7 @@ import {
 
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import ConfirmModal from "../components/ConfirmModal";
 
 function ItemDetails() {
   const { id } = useParams();
@@ -16,6 +17,8 @@ function ItemDetails() {
 
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [claimMessage, setClaimMessage] =
     useState("");
@@ -46,24 +49,19 @@ function ItemDetails() {
     item &&
     item.reportedBy?._id === user.id;
 
-  const handleDelete = async () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this report?"
-    );
-
-    if (!confirmed) return;
-
+  const confirmDelete = async () => {
     try {
+      setIsDeleting(true);
       await api.delete(`/items/${id}`);
-
-      alert("Report deleted");
-
+      setShowDeleteModal(false);
       navigate("/items");
     } catch (error) {
       alert(
         error.response?.data?.message ||
           "Failed to delete"
       );
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -209,8 +207,8 @@ function ItemDetails() {
               </Link>
 
               <button
-                onClick={handleDelete}
-                className="rounded-lg bg-red-600 px-5 py-2 text-white"
+                onClick={() => setShowDeleteModal(true)}
+                className="rounded-lg bg-red-600 px-5 py-2 text-white hover:bg-red-700"
               >
                 Delete
               </button>
@@ -277,6 +275,18 @@ function ItemDetails() {
             )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Delete Item Report"
+        message="Are you sure you want to delete this report? This action cannot be undone."
+        confirmLabel="Delete Report"
+        cancelLabel="Keep Report"
+        isDestructive={true}
+        loading={isDeleting}
+        onConfirm={confirmDelete}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </div>
   );
 }
