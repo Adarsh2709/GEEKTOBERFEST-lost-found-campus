@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import ItemCard from "../components/ItemCard";
+import SearchBar from "../components/SearchBar";
 
 function Items() {
   const [items, setItems] = useState([]);
@@ -74,16 +75,11 @@ function Items() {
       </h1>
 
       {/* Search */}
-      <div className="mb-6">
-        <input
-          type="text"
-          name="search"
-          value={filters.search}
-          onChange={handleChange}
-          placeholder="Search items..."
-          className="w-full rounded-lg border px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+      <SearchBar
+        value={filters.search}
+        onChange={handleChange}
+        placeholder="Search items..."
+      />
 
       {/* Filters */}
       <div className="mb-8 grid gap-4 md:grid-cols-4">
