@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import StatusBadge from "../components/StatusBadge";
 
 function Dashboard() {
   const { user } = useAuth();
@@ -149,7 +150,7 @@ function Dashboard() {
                   </td>
 
                   <td className="p-4">
-                    {item.status}
+                    <StatusBadge status={item.status} />
                   </td>
 
                   <td className="p-4">

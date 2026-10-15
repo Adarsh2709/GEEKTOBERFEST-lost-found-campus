@@ -7,6 +7,7 @@ import {
 
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import StatusBadge from "../components/StatusBadge";
 
 function ItemDetails() {
   const { id } = useParams();
@@ -177,19 +178,9 @@ function ItemDetails() {
               {new Date(item.date).toLocaleDateString()}
             </div>
 
-            <div>
+            <div className="flex items-center gap-2">
               <strong>Status:</strong>{" "}
-              <span
-                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${
-                  item.status === "claimed"
-                    ? "bg-blue-100 text-blue-700"
-                    : item.status === "recovered"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-gray-100 text-gray-700"
-                }`}
-              >
-                {item.status}
-              </span>
+              <StatusBadge status={item.status} />
             </div>
 
             <div>

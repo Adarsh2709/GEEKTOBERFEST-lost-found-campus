@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import StatusBadge from "./StatusBadge";
 
 function ItemCard({ item }) {
   return (
@@ -42,12 +43,10 @@ function ItemCard({ item }) {
           📍 {item.location}
         </p>
 
-        <p className="mb-4 text-sm text-gray-600">
-          Status:{" "}
-          <span className="font-medium">
-            {item.status}
-          </span>
-        </p>
+        <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
+          <span>Status:</span>
+          <StatusBadge status={item.status} />
+        </div>
 
         <Link
           to={`/items/${item._id}`}
